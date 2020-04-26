@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Channel_Management.API.Data;
 using Channel_Management.API.Models;
@@ -29,7 +30,7 @@ namespace Channel_Management.API
         public IConfiguration Configuration { get; }
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-
+             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddDbContext<DBDataContext>(option =>
             {
                 option.UseLazyLoadingProxies();
@@ -39,18 +40,18 @@ namespace Channel_Management.API
             builder.AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"));
+                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
             }
             ).AddOperationalStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"));
+                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
             ConfigureServices(services);
         }
         public void ConfigureProductionServices(IServiceCollection services)
-        {
+        {  var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddDbContext<DBDataContext>(option =>
             {
                 option.UseLazyLoadingProxies();
@@ -60,12 +61,12 @@ namespace Channel_Management.API
             builder.AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"));
+                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
             }
             ).AddOperationalStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"));
+                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
             ConfigureServices(services);
@@ -110,9 +111,9 @@ namespace Channel_Management.API
             }
 
             // app.UseHttpsRedirection();
-
+            app.UseStaticFiles();
             app.UseRouting();
-            app.UseAuthentication();
+            app.UseIdentityServer();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
