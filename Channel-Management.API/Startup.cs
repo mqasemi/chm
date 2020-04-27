@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -25,12 +27,13 @@ namespace Channel_Management.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            config.GetAllClient();
         }
 
         public IConfiguration Configuration { get; }
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
-             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddDbContext<DBDataContext>(option =>
             {
                 option.UseLazyLoadingProxies();
@@ -40,33 +43,34 @@ namespace Channel_Management.API
             builder.AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
+                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"), sql => sql.MigrationsAssembly(migrationsAssembly));
             }
             ).AddOperationalStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
+                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"), sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
             ConfigureServices(services);
         }
         public void ConfigureProductionServices(IServiceCollection services)
-        {  var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+        {
+            var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddDbContext<DBDataContext>(option =>
             {
                 option.UseLazyLoadingProxies();
                 option.UseSqlite(Configuration.GetConnectionString("defaultConnections"));
             });
-             var builder = cofigurIdenttyServer(services);
+            var builder = cofigurIdenttyServer(services);
             builder.AddConfigurationStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
+                               builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"), sql => sql.MigrationsAssembly(migrationsAssembly));
             }
             ).AddOperationalStore(options =>
             {
                 options.ConfigureDbContext = builder =>
-                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"),sql => sql.MigrationsAssembly(migrationsAssembly));
+                           builder.UseSqlite(Configuration.GetConnectionString("defaultConnections"), sql => sql.MigrationsAssembly(migrationsAssembly));
             });
 
             ConfigureServices(services);
@@ -95,31 +99,77 @@ namespace Channel_Management.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(opt =>
+            /*   services.AddControllers(opt =>
+               {
+                   var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                   opt.Filters.Add(new AuthorizeFilter(policy));
+               });
+               */
+            services.AddMvc(option =>
             {
-                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                opt.Filters.Add(new AuthorizeFilter(policy));
+                option.EnableEndpointRouting = false;
             });
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "SPAUI";
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseDefaultFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+              Path.Combine(Directory.GetCurrentDirectory(), "SPAUI")),
+                RequestPath = ""
+            });
+            if (!env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            }
 
+
+            /*  app.Use(async (context, next) =>
+             {
+                 await next();
+                 if (context.Response.StatusCode == 404
+                  && !Path.HasExtension(context.Request.Path.Value) &&
+                 !context.Request.Path.Value.StartsWith("/api/"))
+                 {
+                     context.Request.Path = "/index.html";
+                     await next();
+                 }
+             }); */
+            // app.UseMvcWithDefaultRoute();
             // app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
+            //app.UseDefaultFiles();
+
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
 
+            /*  app.UseEndpoints(endpoints =>
+             {
+                 endpoints.MapControllers();
+             }); */
             app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+                       {
+                           endpoints.MapControllerRoute(
+                               name: "default",
+                               pattern: "/index.html");
+                       });
+
+
         }
     }
 }

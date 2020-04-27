@@ -1,0 +1,19 @@
+[
+    {
+        "ClientId":"chmUi",
+        "ClientName":"channel management service ui first version",
+        "AllowedGrantTypes":["Code"],
+        "RequireClientSecret":false,
+         "RequirePkce":true,
+        "AllowedScopes":[
+                        "profile",
+                        "email",
+                        "chmApi"
+        ],
+        "RedirectUris":["http://localhost:4200/auth-callback" ],
+        "PostLogoutRedirectUris":["http://localhost:4200/"],
+        "AllowedCorsOrigins":["http://localhost:4200"],
+         "AllowAccessTokensViaBrowser": true
+    }
+    
+]

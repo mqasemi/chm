@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Channel_Management.API.Models
 {
@@ -9,7 +11,8 @@ namespace Channel_Management.API.Models
         public string PersonelNo { get; set; }
         public string PersonelId { get; set; }
         public string  Domain { get; set; } 
-        public Gender gender { get; set; }
+       
+        public Gender Gender { get; set; }
         public string MobileNumber { get; set; }    
         public string BirthDate { get; set; }   
         public string National_id { get; set; }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Channel_Management.API.Data
+namespace Channel_Management.API.Models
 {
     public class Role:IdentityRole<int>
     {
