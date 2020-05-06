@@ -29,10 +29,10 @@
             "scripts": [
               { "input": "plugins/jquery/jquery.min.js", "inject": false, "bundleName": "jquery-min" },
               { "input": "plugins/bootstrap/js/bootstrap.bundle.min.js", "inject": false, "bundleName": "bootstrap-bundle-min" },
-              { "input": "src/assets/dist/js/adminlte.min.js", "inject": false, "bundleName": "adminlte" },
+              { "input": "dist/js/adminlte.min.js", "inject": false, "bundleName": "adminlte" },
               { "input": "plugins/chart.js/Chart.min.js", "inject": false, "bundleName": "Chart" },
-              { "input": "src/assets/dist/js/demo.js", "inject": false, "bundleName": "demo" },
-              { "input": "src/assets/dist/js/pages/dashboard3.js", "inject": false, "bundleName": "dashboard3" }
+              { "input": "dist/js/demo.js", "inject": false, "bundleName": "demo" },
+              { "input": "dist/js/pages/dashboard3.js", "inject": false, "bundleName": "dashboard3" }
 
 
 
