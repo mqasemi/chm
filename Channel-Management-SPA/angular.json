@@ -19,14 +19,26 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
+            "assets": ["src/favicon.ico", "src/assets"
+
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              { "input": "plugins/fontawesome-free/css/all.min.css", "inject": false, "bundleName": "fontawesome-all-min" }
             ],
-            "scripts": []
+            "scripts": [
+              { "input": "plugins/jquery/jquery.min.js", "inject": false, "bundleName": "jquery-min" },
+              { "input": "plugins/bootstrap/js/bootstrap.bundle.min.js", "inject": false, "bundleName": "bootstrap-bundle-min" },
+              { "input": "src/assets/dist/js/adminlte.min.js", "inject": false, "bundleName": "adminlte" },
+              { "input": "plugins/chart.js/Chart.min.js", "inject": false, "bundleName": "Chart" },
+              { "input": "src/assets/dist/js/demo.js", "inject": false, "bundleName": "demo" },
+              { "input": "src/assets/dist/js/pages/dashboard3.js", "inject": false, "bundleName": "dashboard3" }
+
+
+
+
+              
+            ]
           },
           "configurations": {
             "production": {
@@ -83,13 +95,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         },
@@ -101,9 +108,7 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {

@@ -3033,7 +3033,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/masood/project/dotnetcore/chm/Channel-Management-SPA/src/polyfills.ts */"./src/polyfills.ts");
+module.exports = __webpack_require__(/*! C:\Users\ms-ghasemi\Documents\project\chm\Channel-Management-SPA\src\polyfills.ts */"./src/polyfills.ts");
 
 
 /***/ })

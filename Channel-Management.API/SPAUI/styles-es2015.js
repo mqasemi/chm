@@ -11,7 +11,7 @@
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
 exports = ___CSS_LOADER_API_IMPORT___(true);
 // Module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n", "",{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA,8EAA8E","file":"styles.css","sourcesContent":["/* You can add global styles to this file, and also import other style files */\n"]}]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\r\n", "",{"version":3,"sources":["styles.css"],"names":[],"mappings":"AAAA,8EAA8E","file":"styles.css","sourcesContent":["/* You can add global styles to this file, and also import other style files */\r\n"]}]);
 // Exports
 module.exports = exports;
 
@@ -441,7 +441,7 @@ module.exports = exported;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/masood/project/dotnetcore/chm/Channel-Management-SPA/src/styles.css */"./src/styles.css");
+module.exports = __webpack_require__(/*! C:\Users\ms-ghasemi\Documents\project\chm\Channel-Management-SPA\src\styles.css */"./src/styles.css");
 
 
 /***/ })

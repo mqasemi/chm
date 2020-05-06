@@ -973,7 +973,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   /***/
   function _(module, exports, __webpack_require__) {
     module.exports = __webpack_require__(
-    /*! /home/masood/project/dotnetcore/chm/Channel-Management-SPA/src/main.ts */
+    /*! C:\Users\ms-ghasemi\Documents\project\chm\Channel-Management-SPA\src\main.ts */
     "./src/main.ts");
     /***/
   }

@@ -490,7 +490,7 @@ _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["platformBrowser"]().boot
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/masood/project/dotnetcore/chm/Channel-Management-SPA/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! C:\Users\ms-ghasemi\Documents\project\chm\Channel-Management-SPA\src\main.ts */"./src/main.ts");
 
 
 /***/ })
