@@ -25,15 +25,19 @@
             ],
             "styles": [
               "src/styles.css",
-              { "input": "plugins/fontawesome-free/css/all.min.css", "inject": false, "bundleName": "fontawesome-all-min" }
+              { "input": "plugins/fontawesome-free/css/all.min.css", "inject": true, "bundleName": "fontawesome-all-min" },
+              { "input": "dist/css/adminlte.min.css", "inject": true, "bundleName": "adminlte-css" },
+              { "input": "dist/ionic/css/ionicons.min.css", "inject": true, "bundleName": "ionicons-css" }
+
+
             ],
             "scripts": [
-              { "input": "plugins/jquery/jquery.min.js", "inject": false, "bundleName": "jquery-min" },
-              { "input": "plugins/bootstrap/js/bootstrap.bundle.min.js", "inject": false, "bundleName": "bootstrap-bundle-min" },
-              { "input": "dist/js/adminlte.min.js", "inject": false, "bundleName": "adminlte" },
-              { "input": "plugins/chart.js/Chart.min.js", "inject": false, "bundleName": "Chart" },
-              { "input": "dist/js/demo.js", "inject": false, "bundleName": "demo" },
-              { "input": "dist/js/pages/dashboard3.js", "inject": false, "bundleName": "dashboard3" }
+              { "input": "plugins/jquery/jquery.min.js", "inject": true, "bundleName": "jquery-min" },
+              { "input": "plugins/bootstrap/js/bootstrap.bundle.min.js", "inject": true, "bundleName": "bootstrap-bundle-min" },
+              { "input": "dist/js/adminlte.min.js", "inject": true, "bundleName": "adminlte" },
+              { "input": "plugins/chart.js/Chart.min.js", "inject": true, "bundleName": "Chart" },
+              { "input": "dist/js/demo.js", "inject": true, "bundleName": "demo" },
+              { "input": "dist/js/pages/dashboard3.js", "inject": true, "bundleName": "dashboard3" }
 
 
 
