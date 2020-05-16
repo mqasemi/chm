@@ -19,30 +19,65 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "assets": ["src/favicon.ico", "src/assets",
-              {"glob":"**/*" , "input":"dist/","output":"dist" }
-
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "dist/",
+                "output": "dist"
+              }
             ],
             "styles": [
+              "./node_modules/@nebular/theme/styles/prebuilt/default.css",
               "src/styles.css",
-              { "input": "plugins/fontawesome-free/css/all.min.css", "inject": true, "bundleName": "fontawesome-all-min" },
-              { "input": "dist/css/adminlte.min.css", "inject": true, "bundleName": "adminlte-css" },
-              { "input": "dist/ionic/css/ionicons.min.css", "inject": true, "bundleName": "ionicons-css" }
-
-
+              {
+                "input": "plugins/fontawesome-free/css/all.min.css",
+                "inject": true,
+                "bundleName": "fontawesome-all-min"
+              },
+              {
+                "input": "dist/css/adminlte.min.css",
+                "inject": true,
+                "bundleName": "adminlte-css"
+              },
+              {
+                "input": "dist/ionic/css/ionicons.min.css",
+                "inject": true,
+                "bundleName": "ionicons-css"
+              }
             ],
             "scripts": [
-              { "input": "plugins/jquery/jquery.min.js", "inject": true, "bundleName": "jquery-min" },
-              { "input": "plugins/bootstrap/js/bootstrap.bundle.min.js", "inject": true, "bundleName": "bootstrap-bundle-min" },
-              { "input": "dist/js/adminlte.min.js", "inject": true, "bundleName": "adminlte" },
-              { "input": "plugins/chart.js/Chart.min.js", "inject": true, "bundleName": "Chart" },
-              { "input": "dist/js/demo.js", "inject": true, "bundleName": "demo" },
-              { "input": "dist/js/pages/dashboard3.js", "inject": true, "bundleName": "dashboard3" }
-
-
-
-
-              
+              {
+                "input": "plugins/jquery/jquery.min.js",
+                "inject": true,
+                "bundleName": "jquery-min"
+              },
+              {
+                "input": "plugins/bootstrap/js/bootstrap.bundle.min.js",
+                "inject": true,
+                "bundleName": "bootstrap-bundle-min"
+              },
+              {
+                "input": "dist/js/adminlte.min.js",
+                "inject": true,
+                "bundleName": "adminlte"
+              },
+              {
+                "input": "plugins/chart.js/Chart.min.js",
+                "inject": true,
+                "bundleName": "Chart"
+              },
+              {
+                "input": "dist/js/demo.js",
+                "inject": true,
+                "bundleName": "demo"
+              },
+              {
+                "input": "dist/js/pages/dashboard3.js",
+                "inject": true,
+                "bundleName": "dashboard3"
+              }
             ]
           },
           "configurations": {
@@ -100,8 +135,13 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.css"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css"
+            ],
             "scripts": []
           }
         },
@@ -113,7 +153,9 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": ["**/node_modules/**"]
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         },
         "e2e": {

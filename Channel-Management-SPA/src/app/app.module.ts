@@ -2,23 +2,24 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { AppheaderComponent } from './appheader/appheader.component';
-import { AppmenuComponent } from './appmenu/appmenu.component';
-import { AppfooterComponent } from './appfooter/appfooter.component';
-import { AppsettingComponent } from './appsetting/appsetting.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NbThemeModule, NbLayoutModule, NbLayoutDirection, NbSidebarModule } from '@nebular/theme';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { AppRoutingModule } from './app-routing.module';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    AppheaderComponent,
-    AppmenuComponent,
-    AppfooterComponent,
-    AppsettingComponent,
-    DashboardComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    NbThemeModule.forRoot({ name: 'default' },null,null,NbLayoutDirection.RTL),
+    NbSidebarModule.forRoot(),
+    NbLayoutModule,
+    NbEvaIconsModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
