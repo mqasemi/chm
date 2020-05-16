@@ -109,6 +109,16 @@ export class NbAuthService {
       );
   }
 
+  startAuthentication(): Promise<void> {
+    return this.manager.signinRedirect();
+  }
+
+  completeAuthentication(): Promise<void> {
+    return this.manager.signinRedirectCallback().then((user) => {
+      this.user = user;
+    });
+  }
+
   /**
    * Registers with the selected strategy
    * Stores received token in the token storage

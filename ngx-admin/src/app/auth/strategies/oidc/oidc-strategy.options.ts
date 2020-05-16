@@ -25,11 +25,11 @@ export enum NbOidcClientAuthMethod {
   REQUEST_BODY = 'request-body',
 }
 
-export class NbOAuth2AuthStrategyOptions extends NbAuthStrategyOptions {
+export class NbOidcAuthStrategyOptions extends NbAuthStrategyOptions {
   baseEndpoint?: string = '';
   clientId: string = '';
   clientSecret?: string = '';
-  clientAuthMethod?: string = NbOAuth2ClientAuthMethod.NONE;
+  clientAuthMethod?: string = NbOidcClientAuthMethod.NONE;
   redirect?: { success?: string; failure?: string } = {
     success: '/',
     failure: null,
@@ -58,7 +58,7 @@ export class NbOAuth2AuthStrategyOptions extends NbAuthStrategyOptions {
     class: NbAuthTokenClass,
   } = {
     endpoint: 'token',
-    grantType: NbOAuth2GrantType.AUTHORIZATION_CODE,
+    grantType: NbOidcGrantType.AUTHORIZATION_CODE,
     requireValidToken: true,
     class: NbAuthOAuth2Token,
   };
@@ -69,9 +69,9 @@ export class NbOAuth2AuthStrategyOptions extends NbAuthStrategyOptions {
     requireValidToken?: boolean;
   } = {
     endpoint: 'token',
-    grantType: NbOAuth2GrantType.REFRESH_TOKEN,
+    grantType: NbOidcGrantType.REFRESH_TOKEN,
     requireValidToken: true,
   };
 }
 
-export const auth2StrategyOptions: NbOAuth2AuthStrategyOptions = new NbOAuth2AuthStrategyOptions();
+export const oidcStrategyOptions: NbOidcAuthStrategyOptions = new NbOidcAuthStrategyOptions();
