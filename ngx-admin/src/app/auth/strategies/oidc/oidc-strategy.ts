@@ -207,7 +207,9 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
       this.getOption('redirect.success'),
       [],
       this.getOption('defaultMessages'),
-      this.createToken(res, requireValidToken));
+     // this.createToken(res, requireValidToken)
+     null
+      );
   }
 
   protected buildCodeRequestData(code: string): any {
