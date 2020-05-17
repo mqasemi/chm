@@ -29,7 +29,9 @@ namespace Channel_Management.API
                 var roleManager=scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 
                 dBDataContext.Database.Migrate();
+                configurationDbContext.Database.Migrate();
                 persistedGrantDbContext.Database.Migrate();
+
                 Seed.SeedConfigurationDb(configurationDbContext);
                 Seed.SeedUser(userManager,roleManager);
 

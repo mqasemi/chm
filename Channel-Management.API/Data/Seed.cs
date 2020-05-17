@@ -11,28 +11,35 @@ namespace Channel_Management.API.Data
 {
     public class Seed
     {
-        public static  void SeedConfigurationDb(ConfigurationDbContext context){
-            context.Database.Migrate();
-            foreach (var client in config.GetAllClient())  
+        public static  void SeedConfigurationDb(ConfigurationDbContext configurationDb){
+          
+if (!configurationDb.Clients.Any())
             {
-                if(! context.Clients.AnyAsync(cl=>cl.ClientId==client.ClientId).Result){
-                    context.Clients.Add(client.ToEntity());
+                foreach (var client in config.GetClients())
+                {
+                    configurationDb.Clients.Add(client.ToEntity());
                 }
-                
+                configurationDb.SaveChanges();
             }
-            foreach (var api in config.GetAllApi())
+
+            if (!configurationDb.IdentityResources.Any())
             {
-                if(! context.ApiResources.AnyAsync(ap=>ap.Name==api.Name).Result){
-                    context.ApiResources.Add(api.ToEntity());
+                foreach (var resource in config.GetIdentityResources())
+                {
+                    configurationDb.IdentityResources.Add(resource.ToEntity());
                 }
+                configurationDb.SaveChanges();
             }
-             foreach (var iresource in config.GetAllResource())
-             {
-                 if(! context.IdentityResources.AnyAsync(ir=>ir.Name==iresource.Name).Result){
-                    context.Add(iresource.ToEntity());
+
+            if (!configurationDb.ApiResources.Any())
+            {
+                foreach (var resource in config.getApiResource())
+                {
+                    configurationDb.ApiResources.Add(resource.ToEntity());
                 }
-             }
-            context.SaveChanges();
+                configurationDb.SaveChanges();
+            }
+            
         }
         public static void SeedUser(UserManager<User> userManager,RoleManager<Role> roleManager){
             

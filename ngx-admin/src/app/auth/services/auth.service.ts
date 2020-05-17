@@ -13,20 +13,16 @@ import {  NB_OIDC_STRATEGIES } from '../auth.options';
 import { NbAuthResult } from './auth-result';
 import { NbTokenService } from './token/token.service';
 import { NbAuthToken } from './token/token';
-import { User, UserManager, UserManagerSettings } from 'oidc-client';
+
 /**
  * Common authentication service.
  * Should be used to as an interlayer between UI Components and Auth Strategy.
  */
 @Injectable()
 export class NbAuthService {
-  private user: User = null;
-  private manager = new UserManager(getClientSettings());
+
   constructor(protected tokenService: NbTokenService,
-              @Inject(NB_OIDC_STRATEGIES) protected strategies) {
-                this.manager.getUser().then((user) => {
-                  this.user = user;
-                });
+              @Inject(NB_OIDC_STRATEGIES) protected strategies) {      
   }
 
   /**
@@ -108,16 +104,9 @@ export class NbAuthService {
         }),
       );
   }
+ 
 
-  startAuthentication(): Promise<void> {
-    return this.manager.signinRedirect();
-  }
-
-  completeAuthentication(): Promise<void> {
-    return this.manager.signinRedirectCallback().then((user) => {
-      this.user = user;
-    });
-  }
+ 
 
   /**
    * Registers with the selected strategy
@@ -244,17 +233,3 @@ export class NbAuthService {
 }
 
 
-export function getClientSettings(): UserManagerSettings {
-  return {
-    authority: 'http://localhost:5000/',
-    client_id: 'angular_spa',
-    redirect_uri: 'http://localhost:4200/auth-callback',
-    post_logout_redirect_uri: 'http://localhost:4200/',
-    response_type: 'id_token token',
-    scope: 'openid profile BankApiDotnet',
-    filterProtocolClaims: true,
-    loadUserInfo: true,
-    automaticSilentRenew: true,
-    silent_redirect_uri: 'http://localhost:4200/silent-refresh.html'
-  };
-}

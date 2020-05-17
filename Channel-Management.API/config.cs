@@ -7,23 +7,36 @@ namespace Channel_Management.API
 {
     public class config
     {
-        public static IEnumerable<IdentityResource> GetAllResource()
-        {
-            return new List<IdentityResource>{
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
-                };
-        }
-        public static IEnumerable<ApiResource>GetAllApi(){
+       public static IEnumerable<ApiResource> getApiResource(){
             return new List<ApiResource>{
-                new ApiResource{ Name="chmApi", DisplayName="Service Management Api"}
+                new ApiResource("chmApi", "channel management api")
             };
         }
-        public static IEnumerable<Client> GetAllClient(){
-             var clientData = System.IO.File.ReadAllText("is4-config/client.json");
-             var clients = JsonConvert.DeserializeObject<List<Client>>(clientData);
-            return clients;
+        public static IEnumerable<Client> GetClients(){
+            return new List<Client> {
+                new Client {
+    ClientId = "chmUi",
+    ClientName = "chmUi",
+    AllowedGrantTypes = GrantTypes.Code,
+    AllowedScopes = new List<string> { "openid", "profile", "chmApi" },
+    RedirectUris = new List<string> { "http://localhost:4200/pages/auth-callback" },
+    PostLogoutRedirectUris = new List<string> { "http://localhost:4200/" },
+    AllowedCorsOrigins = new List<string> { "http://localhost:4200" },
+    AllowAccessTokensViaBrowser = true,
+    RequirePkce = true,
+    RequireClientSecret = false,
+}
+                
+            };
         }
+        public static List<IdentityResource> GetIdentityResources()
+{
+    return new List<IdentityResource>
+    {
+        new IdentityResources.OpenId(),
+        new IdentityResources.Profile() // <-- usefull
+    };
+}
     }
 
 }

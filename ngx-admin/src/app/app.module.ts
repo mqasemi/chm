@@ -27,6 +27,11 @@ import {
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NbAuthModule } from './auth/auth.module';
+import { NbOidcAuthStrategy } from './auth/strategies/oidc/oidc-strategy';
+import { NbOAuth2AuthStrategy } from './auth/strategies/oauth2/oauth2-strategy';
+
+
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -47,6 +52,14 @@ import { NbAuthModule } from './auth/auth.module';
     ThemeModule.forRoot(),
     NbThemeModule.forRoot({name:'corporate'}, null, null, NbLayoutDirection.RTL),
     TranslateModule.forRoot(),
+    NbAuthModule.forRoot({
+      strategies:[
+        NbOidcAuthStrategy.setup({
+          name:'google',
+          clientId:'chmUi'
+        })
+      ]
+    }),
   ],
   bootstrap: [AppComponent],
 })

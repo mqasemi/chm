@@ -20,7 +20,7 @@ import {
 } from './oidc-strategy.options';
 import { NbAuthStrategyClass } from '../../auth.options';
 
-
+import { User, UserManager, UserManagerSettings } from 'oidc-client';
 /**
  * OAuth2 authentication strategy.
  *
@@ -93,7 +93,8 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
   static setup(options: NbOidcAuthStrategyOptions): [NbAuthStrategyClass, NbOidcAuthStrategyOptions] {
     return [NbOidcAuthStrategy, options];
   }
-
+  private user: User = null;
+  private manager = new UserManager(getClientSettings());
   get responseType() {
     return this.getOption('authorize.responseType');
   }
@@ -104,22 +105,24 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
 
   protected redirectResultHandlers: { [key: string]: Function } = {
     [NbOAuth2ResponseType.CODE]: () => {
-      return observableOf(this.route.snapshot.queryParams).pipe(
-        switchMap((params: any) => {
-          if (params.code) {
-            return this.requestToken(params.code)
-          }
+      this.completeAuthentication()
+      
+      // return observableOf(this.route.snapshot.queryParams).pipe(
+      //   switchMap((params: any) => {
+      //     if (params.code) {
+      //       return this.requestToken(params.code)
+      //     }
 
-          return observableOf(
-            new NbAuthResult(
-              false,
-              params,
-              this.getOption('redirect.failure'),
-              this.getOption('defaultErrors'),
-              [],
-            ));
-        }),
-      );
+      //     return observableOf(
+      //       new NbAuthResult(
+      //         false,
+      //         params,
+      //         this.getOption('redirect.failure'),
+      //         this.getOption('defaultErrors'),
+      //         [],
+      //       ));
+      //   }),
+      // );
     },
   };
 
@@ -137,26 +140,24 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
               protected route: ActivatedRoute,
               @Inject(NB_WINDOW) protected window: any) {
     super();
+    this.manager.getUser().then((user) => {
+      this.user = user;
+    });
   }
 
   authenticate(data?: any): Observable<NbAuthResult> {
-
-    if (this.getOption('token.grantType') === NbOidcGrantType.PASSWORD) {
-      return this.passwordToken(data.email, data.password)
-    } else {
       return this.isRedirectResult()
         .pipe(
           switchMap((result: boolean) => {
             if (!result) {
-              this.authorizeRedirect();
+            //  this.authorizeRedirect();
+            this.startAuthentication();
               return observableOf(new NbAuthResult(true));
             }
             return this.getAuthorizationResult();
           }),
         );
-    }
   }
-
   getAuthorizationResult(): Observable<any> {
     const redirectResultHandler = this.redirectResultHandlers[this.responseType];
     if (redirectResultHandler) {
@@ -190,28 +191,6 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
       );
   }
 
-  passwordToken(username: string, password: string): Observable<NbAuthResult> {
-    const module = 'token';
-    const url = this.getActionEndpoint(module);
-    const requireValidToken = this.getOption(`${module}.requireValidToken`);
-
-    let headers = this.buildAuthHeader() || new HttpHeaders() ;
-    headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-    return this.http.post(url, this.buildPasswordRequestData(username, password), { headers: headers })
-      .pipe(
-        map((res) => {
-          return new NbAuthResult(
-            true,
-            res,
-            this.getOption('redirect.success'),
-            [],
-            this.getOption('defaultMessages'),
-            this.createToken(res, requireValidToken));
-        }),
-        catchError((res) => this.handleResponseError(res)),
-      );
-  }
 
   protected authorizeRedirect() {
     this.window.location.href = this.buildRedirectUrl();
@@ -222,27 +201,13 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
   }
 
   protected requestToken(code: string) {
-
-    const module = 'token';
-    const url = this.getActionEndpoint(module);
-    const requireValidToken = this.getOption(`${module}.requireValidToken`);
-
-    let headers = this.buildAuthHeader() || new HttpHeaders() ;
-    headers = headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-    return this.http.post(url, this.buildCodeRequestData(code), { headers: headers })
-      .pipe(
-        map((res) => {
-          return new NbAuthResult(
-            true,
-            res,
-            this.getOption('redirect.success'),
-            [],
-            this.getOption('defaultMessages'),
-            this.createToken(res, requireValidToken));
-        }),
-        catchError((res) => this.handleResponseError(res)),
-      );
+    return new NbAuthResult(
+      true,
+      null,
+      this.getOption('redirect.success'),
+      [],
+      this.getOption('defaultMessages'),
+      this.createToken(res, requireValidToken));
   }
 
   protected buildCodeRequestData(code: string): any {
@@ -391,4 +356,29 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
   logout(): Observable<NbAuthResult> {
     return observableOf(new NbAuthResult(true));
   }
+
+  startAuthentication(): Promise<void> {
+    return this.manager.signinRedirect();
+  }
+
+  completeAuthentication(): Promise<void> {
+    return this.manager.signinRedirectCallback().then((user) => {
+      this.user = user;
+    });
+  }
+}
+
+
+export function getClientSettings(): UserManagerSettings {
+  return {
+    authority: 'http://localhost:5000/',
+    client_id: 'chmUi',
+    redirect_uri: 'http://localhost:4200/pages/auth-callback',
+    post_logout_redirect_uri: 'http://localhost:4200/',
+    response_type: 'code',
+    scope: 'openid profile chmApi',
+    filterProtocolClaims: true,
+    loadUserInfo: true,
+    automaticSilentRenew: true
+  };
 }

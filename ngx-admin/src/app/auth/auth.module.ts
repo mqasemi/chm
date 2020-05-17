@@ -35,6 +35,7 @@ import {
   NB_AUTH_USER_OPTIONS,
   NbAuthOptions,
   NbAuthStrategyClass,
+  NB_OIDC_STRATEGIES,
 } from './auth.options';
 
 import { NbAuthComponent } from './components/auth.component';
@@ -47,6 +48,7 @@ import { NbRequestPasswordComponent } from './components/request-password/reques
 import { NbResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 import { deepExtend } from './helpers';
+import { NbOidcAuthStrategy } from './strategies/oidc/oidc-strategy';
 
 export function nbStrategiesFactory(options: NbAuthOptions, injector: Injector): NbAuthStrategy[] {
   const strategies = [];
@@ -117,7 +119,8 @@ export class NbAuthModule {
         { provide: NB_AUTH_USER_OPTIONS, useValue: nbAuthOptions },
         { provide: NB_AUTH_OPTIONS, useFactory: nbOptionsFactory, deps: [NB_AUTH_USER_OPTIONS] },
         { provide: NB_AUTH_STRATEGIES, useFactory: nbStrategiesFactory, deps: [NB_AUTH_OPTIONS, Injector] },
-        { provide: NB_AUTH_TOKENS, useFactory: nbTokensFactory, deps: [NB_AUTH_STRATEGIES] },
+        { provide: NB_OIDC_STRATEGIES, useFactory: nbStrategiesFactory, deps: [NB_AUTH_OPTIONS, Injector] },
+        { provide: NB_AUTH_TOKENS, useFactory: nbTokensFactory, deps: [NB_AUTH_STRATEGIES,NB_OIDC_STRATEGIES] },
         { provide: NB_AUTH_FALLBACK_TOKEN, useValue: NbAuthSimpleToken },
         { provide: NB_AUTH_INTERCEPTOR_HEADER, useValue: 'Authorization' },
         { provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: nbNoOpInterceptorFilter },
@@ -128,6 +131,7 @@ export class NbAuthModule {
         NbDummyAuthStrategy,
         NbPasswordAuthStrategy,
         NbOAuth2AuthStrategy,
+        NbOidcAuthStrategy,
       ],
     };
   }

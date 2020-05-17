@@ -8,6 +8,8 @@ import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { SharedModule } from '../shaered-modules/shared.module';
+import { LoginTest } from './logintest/loginTest';
+import { OAuth2CallbackComponent } from './logintest/OAuth2CallbackComponent';
 
 @NgModule({
   imports: [
@@ -21,6 +23,8 @@ import { SharedModule } from '../shaered-modules/shared.module';
   ],
   declarations: [
     PagesComponent,
+    LoginTest,
+    OAuth2CallbackComponent,
   ],
 })
 export class PagesModule {

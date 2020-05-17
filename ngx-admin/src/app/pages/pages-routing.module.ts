@@ -5,6 +5,8 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { LoginTest } from './logintest/loginTest';
+import { OAuth2CallbackComponent } from './logintest/OAuth2CallbackComponent';
 
 
 const routes: Routes = [{
@@ -14,6 +16,11 @@ const routes: Routes = [{
     {
       path: 'dashboard',
       component: DashboardComponent,
+    },{
+      path:'login', component:LoginTest
+    },
+    {
+      path:'auth-callback',component:OAuth2CallbackComponent
     },
     // {
     //   path: 'iot-dashboard',

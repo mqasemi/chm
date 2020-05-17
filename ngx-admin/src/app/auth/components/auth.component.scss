@@ -1,4 +1,5 @@
-@import '../../theme/styles/global/breakpoints';
+
+@import '../../../../node_modules/@nebular/theme/styles/global/breakpoints';
 
 :host {
   $auth-layout-padding: 2.5rem;

@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Channel_Management.API.Data;
 using Channel_Management.API.Models;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +28,7 @@ namespace Channel_Management.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            config.GetAllClient();
+           
         }
 
         public IConfiguration Configuration { get; }
@@ -135,6 +136,7 @@ namespace Channel_Management.API
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
+              
             }
 
 
