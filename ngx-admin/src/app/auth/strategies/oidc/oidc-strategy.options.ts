@@ -7,7 +7,7 @@
 import { NbAuthOAuth2Token, NbAuthTokenClass } from '../../services/token/token';
 import { NbAuthStrategyOptions } from '../auth-strategy-options';
 
-export enum NbOAuth2ResponseType {
+export enum NbOidcResponseType {
   CODE = 'code',
   TOKEN = 'token',
 }
@@ -46,7 +46,7 @@ export class NbOidcAuthStrategyOptions extends NbAuthStrategyOptions {
     params?: { [key: string]: string };
   } = {
     endpoint: 'authorize',
-    responseType: NbOAuth2ResponseType.CODE,
+    responseType: NbOidcResponseType.CODE,
     requireValidToken: true,
   };
   token?: {

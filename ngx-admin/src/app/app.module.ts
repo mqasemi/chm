@@ -28,7 +28,12 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NbAuthModule } from './auth/auth.module';
 import { NbOidcAuthStrategy } from './auth/strategies/oidc/oidc-strategy';
-import { NbOAuth2AuthStrategy } from './auth/strategies/oauth2/oauth2-strategy';
+
+
+// import { NbAuthModule } from './auth/auth.module';
+// import { NbOidcAuthStrategy } from './auth/strategies/oidc/oidc-strategy';
+// import { NbOAuth2AuthStrategy } from './auth/strategies/oauth2/oauth2-strategy';
+// import { oidcStrategyOptions } from './auth/strategies/oidc/oidc-strategy.options';
 
 
 
@@ -52,11 +57,25 @@ import { NbOAuth2AuthStrategy } from './auth/strategies/oauth2/oauth2-strategy';
     ThemeModule.forRoot(),
     NbThemeModule.forRoot({name:'corporate'}, null, null, NbLayoutDirection.RTL),
     TranslateModule.forRoot(),
+    // NbAuthModule.forRoot({
+    //   strategies:[
+    //     NbOAuth2AuthStrategy.setup({
+    //       name:'chmUi',
+    //       clientId:'chmUiq',
+    //       authorize:{
+    //          redirectUri:'http://localhost:4200/pages/auth-callback',
+    //          endpoint:'http://localhost:5000/connect/authorize',
+    //          responseType: NbOAuth2ResponseType.CODE,
+    //          scope:'openid profile chmApi'
+    //       }
+    //     })
+    //   ]
+    // })
     NbAuthModule.forRoot({
       strategies:[
         NbOidcAuthStrategy.setup({
-          name:'google',
-          clientId:'chmUi'
+          name:'chmUi',
+          clientId:'chmUi',
         })
       ]
     }),

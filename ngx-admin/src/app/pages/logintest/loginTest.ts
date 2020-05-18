@@ -17,7 +17,7 @@ export class LoginTest implements OnDestroy {
     constructor(private authService: NbAuthService){
     }
     login() {
-      this.authService.authenticate('google')
+      this.authService.authenticate('chmUi')
         .pipe(takeUntil(this.destroy$))
         .subscribe(
             (authResult: NbAuthResult) => {

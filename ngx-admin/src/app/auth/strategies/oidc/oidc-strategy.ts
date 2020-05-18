@@ -14,9 +14,8 @@ import { NbAuthStrategy } from '../auth-strategy';
 import { NbAuthIllegalTokenError, NbAuthRefreshableToken, NbAuthToken } from '../../services/token/token';
 import { NbAuthResult } from '../../services/auth-result';
 import {
-  NbOAuth2ResponseType,
   oidcStrategyOptions,
-  NbOidcGrantType, NbOidcClientAuthMethod, NbOidcAuthStrategyOptions,
+  NbOidcGrantType, NbOidcClientAuthMethod, NbOidcAuthStrategyOptions, NbOidcResponseType,
 } from './oidc-strategy.options';
 import { NbAuthStrategyClass } from '../../auth.options';
 
@@ -104,30 +103,32 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
   }
 
   protected redirectResultHandlers: { [key: string]: Function } = {
-    [NbOAuth2ResponseType.CODE]: () => {
-      this.completeAuthentication()
-      
-      // return observableOf(this.route.snapshot.queryParams).pipe(
-      //   switchMap((params: any) => {
-      //     if (params.code) {
-      //       return this.requestToken(params.code)
-      //     }
+    [NbOidcResponseType.CODE]: () => {
+      this.completeAuthentication().then( 
+      (value)=>{
+       
+        if(this.user) {
+          return this.requestToken(this.user.access_token)
+        }else{
+          return observableOf(
+            new NbAuthResult(
+              false,
+              this.route.snapshot.queryParams,
+              this.getOption('redirect.failure'),
+              this.getOption('defaultErrors'),
+              [],
+            ));
+        }
+      }
+      );
+    
+         
 
-      //     return observableOf(
-      //       new NbAuthResult(
-      //         false,
-      //         params,
-      //         this.getOption('redirect.failure'),
-      //         this.getOption('defaultErrors'),
-      //         [],
-      //       ));
-      //   }),
-      // );
     },
   };
 
   protected redirectResults: { [key: string]: Function } = {
-    [NbOAuth2ResponseType.CODE]: () => {
+    [NbOidcResponseType.CODE]: () => {
       return observableOf(this.route.snapshot.queryParams).pipe(
         map((params: any) => !!(params && (params.code || params.error))),
       );
@@ -200,15 +201,19 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
     return this.redirectResults[this.responseType].call(this);
   }
 
-  protected requestToken(code: string) {
+  protected requestToken(code: string ) {
+    const module = 'token';
+    const url = this.getActionEndpoint(module);
+    const requireValidToken = this.getOption(`${module}.requireValidToken`);
+
     return new NbAuthResult(
       true,
-      null,
+      code,
       this.getOption('redirect.success'),
       [],
       this.getOption('defaultMessages'),
-     // this.createToken(res, requireValidToken)
-     null
+      this.createToken({'token_type':this.user.token_type,'expires_in':this.user.expires_in,
+    'access_token':this.user.access_token,'refresh_token':this.user.refresh_token}, requireValidToken)
       );
   }
 

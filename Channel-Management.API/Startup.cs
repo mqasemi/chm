@@ -100,21 +100,13 @@ namespace Channel_Management.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+             services.AddControllersWithViews();
             /*   services.AddControllers(opt =>
                {
                    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                    opt.Filters.Add(new AuthorizeFilter(policy));
                });
                */
-            services.AddMvc(option =>
-            {
-                option.EnableEndpointRouting = false;
-            });
-
-            services.AddSpaStaticFiles(configuration =>
-            {
-                configuration.RootPath = "SPAUI";
-            });
 
         }
 
@@ -151,25 +143,16 @@ namespace Channel_Management.API
                      await next();
                  }
              }); */
-            // app.UseMvcWithDefaultRoute();
-            // app.UseHttpsRedirection();
-            app.UseMvcWithDefaultRoute();
-            //app.UseDefaultFiles();
 
             app.UseRouting();
             app.UseIdentityServer();
             app.UseAuthorization();
 
-            /*  app.UseEndpoints(endpoints =>
-             {
-                 endpoints.MapControllers();
-             }); */
-            app.UseEndpoints(endpoints =>
+              app.UseEndpoints(endpoints =>
                        {
-                           endpoints.MapControllerRoute(
-                               name: "default",
-                               pattern: "/index.html");
+                           endpoints.MapDefaultControllerRoute();
                        });
+
 
 
         }
