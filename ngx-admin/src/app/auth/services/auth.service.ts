@@ -105,7 +105,9 @@ export class NbAuthService {
       );
   }
  
-
+  completeOidcAuthentication(strategyName: string):Promise<void>{
+    return this.getStrategy(strategyName).completeAuthenticate()
+  }
  
 
   /**
@@ -219,14 +221,17 @@ export class NbAuthService {
   }
 
   private processResultToken(result: NbAuthResult) {
-    if (result.isSuccess() && result.getToken()) {
-      return this.tokenService.set(result.getToken())
-        .pipe(
-          map((token: NbAuthToken) => {
-            return result;
-          }),
-        );
+    if (result instanceof NbAuthResult){
+      if (result.isSuccess() && result.getToken()) {
+        return this.tokenService.set(result.getToken())
+          .pipe(
+            map((token: NbAuthToken) => {
+              return result;
+            }),
+          );
+      }
     }
+    
 
     return observableOf(result);
   }

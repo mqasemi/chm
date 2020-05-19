@@ -109,4 +109,7 @@ export class NbDummyAuthStrategy extends NbAuthStrategy {
 
 
   }
+  completeAuthenticate():Promise<void>{
+    throw new Error('auth2 no support this function');
+  }
 }

@@ -434,7 +434,9 @@ export class NbOAuth2AuthStrategy extends NbAuthStrategy {
   resetPassword(data: any = {}): Observable<NbAuthResult> {
     throw new Error('`resetPassword` is not supported by `NbOAuth2AuthStrategy`, use `authenticate`.');
   }
-
+  completeAuthenticate():Promise<void>{
+    throw new Error('auth2 no support this function');
+  }
   logout(): Observable<NbAuthResult> {
     return observableOf(new NbAuthResult(true));
   }

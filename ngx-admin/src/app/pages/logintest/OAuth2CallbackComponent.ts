@@ -16,13 +16,17 @@ export class OAuth2CallbackComponent implements OnDestroy {
     private destroy$ = new Subject<void>();
   
     constructor(private authService: NbAuthService, private router: Router) {
-      this.authService.authenticate('chmUi')
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((authResult: NbAuthResult) => {
-          if (authResult.isSuccess() && authResult.getRedirect()) {
-            this.router.navigateByUrl(authResult.getRedirect());
+      this.authService.completeOidcAuthentication('chmUi').then(
+          ()=>{
+            this.authService.authenticate('chmUi').subscribe(value=>{
+              if(value.isSuccess)
+                console.log("success");
+                else
+                console.log("failed")
+            })
           }
-        });
+      );
+     
     }
   
     ngOnDestroy(): void {

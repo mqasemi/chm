@@ -349,5 +349,8 @@ export class NbPasswordAuthStrategy extends NbAuthStrategy {
         errors,
       ));
   }
+  completeAuthenticate():Promise<void>{
+    throw new Error('auth2 no support this function');
+  }
 
 }

@@ -28,6 +28,8 @@ import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NbAuthModule } from './auth/auth.module';
 import { NbOidcAuthStrategy } from './auth/strategies/oidc/oidc-strategy';
+import { NbOAuth2AuthStrategy } from './auth/strategies/oauth2/oauth2-strategy';
+import { NbOAuth2ResponseType } from './auth/strategies/oauth2/oauth2-strategy.options';
 
 
 // import { NbAuthModule } from './auth/auth.module';
@@ -61,12 +63,13 @@ import { NbOidcAuthStrategy } from './auth/strategies/oidc/oidc-strategy';
     //   strategies:[
     //     NbOAuth2AuthStrategy.setup({
     //       name:'chmUi',
-    //       clientId:'chmUiq',
+    //       clientId:'654246011554-ah39m5egij2k43a751raqlq58afvlige.apps.googleusercontent.com',
+    //       clientSecret:'Tt_-VUg89WYo5IIcd4aXL9dl',
     //       authorize:{
     //          redirectUri:'http://localhost:4200/pages/auth-callback',
-    //          endpoint:'http://localhost:5000/connect/authorize',
-    //          responseType: NbOAuth2ResponseType.CODE,
-    //          scope:'openid profile chmApi'
+    //          endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+    //          responseType: NbOAuth2ResponseType.TOKEN,
+    //          scope: 'https://www.googleapis.com/auth/userinfo.profile',
     //       }
     //     })
     //   ]

@@ -9,6 +9,7 @@ import { NbAuthResult } from '../../auth/services/auth-result';
     selector: 'nb-oauth2-login',
     template: `
       <button class="btn btn-success"  (click)="login()">Sign In with Google</button>
+      <button class="btn btn-success"  (click)="lgointest()">testLogin</button>
     `,
   })
 export class LoginTest implements OnDestroy {
@@ -24,6 +25,10 @@ export class LoginTest implements OnDestroy {
         });
     }
   
+    lgointest(){
+     let value= this.authService.isAuthenticated();
+     console.log(value);
+    }
     ngOnDestroy(): void {
       this.destroy$.next();
       this.destroy$.complete();

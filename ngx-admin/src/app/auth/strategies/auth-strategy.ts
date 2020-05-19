@@ -39,7 +39,7 @@ export abstract class NbAuthStrategy {
   getName(): string {
     return this.getOption('name');
   }
-
+  abstract completeAuthenticate(data?: any): Promise<void>;
   abstract authenticate(data?: any): Observable<NbAuthResult>;
 
   abstract register(data?: any): Observable<NbAuthResult>;

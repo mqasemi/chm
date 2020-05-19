@@ -104,23 +104,48 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
 
   protected redirectResultHandlers: { [key: string]: Function } = {
     [NbOidcResponseType.CODE]: () => {
-      this.completeAuthentication().then( 
-      (value)=>{
-       
-        if(this.user) {
-          return this.requestToken(this.user.access_token)
-        }else{
-          return observableOf(
-            new NbAuthResult(
+      const module = 'authorize';
+      const requireValidToken = this.getOption(`${module}.requireValidToken`);
+      return observableOf(this.route.snapshot.queryParams).pipe(map((params: any) => {
+          if (!params.error) {
+            return new NbAuthResult(
+              true,
+              params,
+              this.getOption('redirect.success'),
+              [],
+              this.getOption('defaultMessages'),
+              this.createToken({'token_type':this.user.token_type,'expires_in':this.user.expires_in,
+      'access_token':this.user.access_token,'refresh_token':this.user.refresh_token}, requireValidToken));
+            
+         
+          }
+            return new NbAuthResult(
               false,
-              this.route.snapshot.queryParams,
+              params,
               this.getOption('redirect.failure'),
               this.getOption('defaultErrors'),
               [],
+            );
+          
+          
+        }),
+        catchError(err => {
+          const errors = [];
+          if (err instanceof NbAuthIllegalTokenError) {
+            errors.push(err.message)
+          } else {
+            errors.push('Something went wrong.');
+          }
+          return observableOf(
+            new NbAuthResult(
+              false,
+              err,
+              this.getOption('redirect.failure'),
+              errors,
             ));
-        }
-      }
+        }),
       );
+
     
          
 
@@ -206,7 +231,7 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
     const url = this.getActionEndpoint(module);
     const requireValidToken = this.getOption(`${module}.requireValidToken`);
 
-    return new NbAuthResult(
+    return observableOf( new NbAuthResult(
       true,
       code,
       this.getOption('redirect.success'),
@@ -214,7 +239,7 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
       this.getOption('defaultMessages'),
       this.createToken({'token_type':this.user.token_type,'expires_in':this.user.expires_in,
     'access_token':this.user.access_token,'refresh_token':this.user.refresh_token}, requireValidToken)
-      );
+      ));
   }
 
   protected buildCodeRequestData(code: string): any {
@@ -368,7 +393,7 @@ export class NbOidcAuthStrategy extends NbAuthStrategy {
     return this.manager.signinRedirect();
   }
 
-  completeAuthentication(): Promise<void> {
+  completeAuthenticate(): Promise<void> {
     return this.manager.signinRedirectCallback().then((user) => {
       this.user = user;
     });
